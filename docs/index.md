@@ -1,0 +1,12 @@
+# Index
+
+1. [Switches](./notes/Switches.md)
+2. [Routers](./notes/Routers.md)
+3. [Network Models](./notes/Network%20Models.md)
+4. [Upper Layers](./notes/Upper%20Layers%20in%20Detail.md)
+5. [Network Tier-Based Architecture](./notes/Network%20Architecture.md)
+6. [Hybrid-Cloud](./notes/Hybrid-Cloud.md)
+7. [Ethernet Cables](./notes/Ethernet%20Cables.md)
+8. [IP addresses](./notes/IP%20addresses.md)
+9. [Subnet Mask](./notes/Subnet%20Mask.md)
+10. [Subnetting (GPT notes)](./notes/Subnetting%20(GPT%20notes).md)
