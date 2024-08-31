@@ -7,6 +7,9 @@
 5. [Network Tier-Based Architecture](./notes/Network%20Architecture.md)
 6. [Hybrid-Cloud](./notes/Hybrid-Cloud.md)
 7. [Ethernet Cables](./notes/Ethernet%20Cables.md)
-8. [IP addresses](./notes/IP%20addresses.md)
-9. [Subnet Mask](./notes/Subnet%20Mask.md)
-10. [Subnetting (GPT notes)](./notes/Subnetting%20(GPT%20notes).md)
+8. [[Computer Networks and the Internet]]
+9. [[Application Layer]]
+10. [[Transport layer]]
+11. [IP addresses](./notes/IP%20addresses.md)
+12. [Subnet Mask](./notes/Subnet%20Mask.md)
+13. [Subnetting (GPT notes)](./notes/Subnetting%20(GPT%20notes).md)
