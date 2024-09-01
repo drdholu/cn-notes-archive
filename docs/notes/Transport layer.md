@@ -37,7 +37,7 @@ Hence Multiplexing requires,
 1. Unique identifier for ports
 2. Each segment having special fields indicating the destination socket.
 
-![[Pasted image 20240830100228.png]]
+![Pasted image 20240830100228.png](./images/Pasted%20image%2020240830100228.png)
 
 > Port number is 16 bit number ranging from 0 to 65535. Well known ports range from 0 to 1023.
 
@@ -83,3 +83,62 @@ Servers create threads for each new connection with a new socket for each connec
 In a persistent connection, one socket is responsible for HTTP communication between client and server.
 
 In non-persistent connection, multiple sockets are created and closed for each request & response between the client and server. This can create load on a busy server.
+
+## Connectionless Transport: UDP
+
+- UDP is a connectionless protocol with little error checking and mux & demux functions.
+- UDP adds almost nothing to IP.
+
+We know, 
+- UDP takes the message from application process, attaches **source & dest** port number for mux & demuxing and other small fields.
+- This segment is encapsulated with the transport layer header and sent to the network layer. Then it's further encapsulated with the network header to form the IP datagram. This datagram is then sent to the destination.
+- As we see, there is no handshaking done between the source & destination. Hence UDP is connectionless.
+
+And,
+- DNS is another application layer protocol that uses UDP as its underlying protocol.
+- The **host side** UDP makes its segment, passes it to the network layer to make the datagram and this is sent to the **name server**
+- If DNS application at the host side doesn't get any reply, it tries sending a query again & if after repeated trying it doesn't get a reply, it informs the invoking application.
+
+Why UDP over TCP if it's unreliable?
+1. **Finer application layer control over when data is sent**
+	- UDP quickly encapsulates the message w/ the headers and port information and sends it to the network layer. 
+	- On the other hand TCP has congestion control & does a three-way handshake. TCP keeps on sending a packet until it receives the ack. packet back from destination.
+2. **No connection establishment**
+	- UDP just blasts away without any formal preliminaries. UDP doesn't introduce any delays.
+	- This is probably the reason why DNS using UDP. Even HTTP.
+	- Google Chrome browsers use QUIC, Quick UDP Internet Connection. Which uses UDP as its underlying transport protocol and implements reliability in an application layer protocol on top of UDP.
+3. **No connection state**
+	- TCP maintains a connection for each request and response whereas UDP doesn't maintain any connection and doesn't track any parameters
+4. **Small packet header overhead**
+	- UDP has only 8 bytes of header and TCP has 20 bytes of header.
+
+> But the delays introduced by HTTP over TCP is necessary to download important documents.
+
+![Pasted image 20240901135722.png](./images/Pasted%20image%2020240901135722.png)
+
+- UDP provides no congestion protocol but this protocol needed in a congested state in which very little useful work is done.
+- When there is a congested state, all the UDP packets wouldn't traverse from source to destination. This would in turn block the TCP packets.
+- Although, reliability is something that can be implemented in the application itself while using UDP as the underlying protocol.
+- QUIC is an example of such thing.
+### UDP segment structure
+
+- **Application data** contains DNS query or response message or application data itself.
+- **UDP header** has four fields, each of 2 bytes.
+- **Length field** specifies the number of bytes in the UDP segment.
+- **Checksum** field tells whether any error has occurred or not.
+![Pasted image 20240901141812.png](./images/Pasted%20image%2020240901141812.png)
+
+### Checksum
+
+- Checksum is a method to check for any errors/if any bits are manipulated in the segment.
+- First addition of the 16 bit words in the segment is done, Any overflow encountered is wrapped around.
+- After getting the sum, 1's complement on the sum is performed. This resulting 16 bits are sent along with the other 16 bit words.
+- The destination receives this segment and adds up these 16 bit words along with the checksum. If the result is just 16 1's, then there is no error. If there is a 0, then there is an error.
+
+But why does UDP need this error detection method?
+- No guarantee about error checking between source and destination
+- In router memory could destory bits.
+- UDP provides error checking on an **end to end** basis
+- Although UDP provides this error checking method, it doesn't provide any method to overcome it.
+
+> OS fundamental **end to end** principle: Functions provided at the lower level maybe redundant or of little value when compared to the cost of providing them at the higher level.
